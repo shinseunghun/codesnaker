@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AlgoMapper">
+	<select id="selectAlgoList">
+		SELECT
+		algo_code
+		, algo_name
+		, algo_function
+		, algo_imagepath
+		, algo_big_imgpath
+		, algo_comments
+		, algo_demo_site
+		, algo_manual_path
+		, algo_github_url
+		, reg_date
+		FROM react.react_algo
+		<if test="is_Algocode != null && is_Algocode != ''">
+			WHERE algo_code = #{is_Algocode}
+		</if>
+		ORDER BY update_date DESC
+	</select>
+	<insert id="insertAlgoInfo">
+		INSERT INTO react.react_algo
+		(
+		algo_code
+		, algo_name
+		, algo_function
+		, algo_comments
+		, algo_demo_site
+		, algo_github_url
+		<if test="is_LabelImg != null && is_LabelImg != ''">
+			, algo_imagepath
+		</if>
+		<if test="is_MainImg != null && is_MainImg != ''">
+			, algo_big_imgpath
+		</if>
+		<if test="is_MenualName != null && is_MenualName != ''">
+			, algo_manual_path
+		</if>
+		, reg_date
+		, reg_user
+		, update_date
+		, update_user
+		)
+		VALUES (
+		CONCAT('USW', DATE_FORMAT(now(), '%Y%m%d%H%i%s'))
+		, #{is_Algo_name}
+		, #{is_Algo_function}
+		, #{is_Algo_Comments}
+		, #{is_Algo_demo_site}
+		, #{is_Algo_Giturl}
+		<if test="is_LabelImg != null && is_LabelImg != ''">
+			, #{is_LabelImg}
+		</if>
+		<if test="is_MainImg != null && is_MainImg != ''">
+			, #{is_MainImg}
+		</if>
+		<if test="is_MenualName != null && is_MenualName != ''">
+			, #{is_MenualName}
+		</if>
+		, DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+		, #{is_Email}
+		, DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+		, #{is_Email}
+		)
+	</insert>
+	<update id="updateAlgoInfo">
+		UPDATE react.react_algo
+		SET
+		algo_name = #{is_Algo_name}
+		, algo_function = #{is_Algo_function}
+		, algo_comments = #{is_Algo_Comments}
+		, algo_demo_site = #{is_Algo_demo_site}
+		, algo_github_url = #{is_Algo_Giturl}
+		<if test="is_LabelImg != null && is_LabelImg != ''">
+			, algo_imagepath = #{is_LabelImg}
+		</if>
+		<if test="is_MainImg != null && is_MainImg != ''">
+			, algo_big_imgpath = #{is_MainImg}
+		</if>
+		<if test="is_MenualName != null && is_MenualName != ''">
+			, algo_manual_path = #{is_MenualName}
+		</if>
+		, update_date = DATE_FORMAT(now(), '%Y%m%d%H%i%s')
+		, update_user = #{is_Email}
+		WHERE algo_code = #{is_beforeAlgocode}
+	</update>
+	<delete id="deleteAlgoInfo">
+		DELETE FROM react.react_algo
+		WHERE algo_code = #{is_AlgoCd}
+	</delete>
+</mapper>
